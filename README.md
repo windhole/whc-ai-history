@@ -16,6 +16,8 @@
    git remote add origin https://github.com/<ユーザー名>/<リポジトリ名>.git
    git push -u origin main
    ```
+1. [公開ページのURL](https://windhole.github.io/whc-ai-history/)
+
 3. リポジトリの **Settings → Pages** を開く。
 4. **Source** を `Deploy from a branch`、**Branch** を `main` / `/ (root)` に設定して Save。
 5. 数十秒〜数分後、`https://<ユーザー名>.github.io/<リポジトリ名>/` で公開される。
