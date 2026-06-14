@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIの研究・挑戦の歴史 1990–2026</title>
+<meta name="description" content="プログラマー視点でまとめた、AI研究・挑戦の通史（1990〜2026）。記号処理から統計的学習、ディープラーニング革命、生成AI・エージェントまで。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0e14;
+    --bg-soft:#12151f;
+    --panel:#161a26;
+    --ink:#e8eaf0;
+    --ink-dim:#9aa3b8;
+    --ink-faint:#646d84;
+    --line:#252b3b;
+    /* through-line: programmer's relationship to AI */
+    --phosphor:#5ef2a0;
+    /* the "world" / social column */
+    --amber:#f2b35e;
+    /* era accents */
+    --era1:#6f8cff;  /* 1990s: winter → statistical */
+    --era2:#37d6e0;  /* 2000s–10s: deep learning */
+    --era3:#e368d8;  /* 2020s: generative / agents */
+    --maxw:1080px;
+    --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+    --display:'Space Grotesk',system-ui,sans-serif;
+    --body:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--body);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  a{color:inherit}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:clamp(3rem,9vw,7rem) clamp(1.2rem,5vw,3rem) clamp(2rem,5vw,4rem);
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:.78rem;
+    letter-spacing:.18em;
+    color:var(--phosphor);
+    text-transform:uppercase;
+    display:flex;align-items:center;gap:.6rem;
+    margin-bottom:1.6rem;
+  }
+  .eyebrow::before{
+    content:"";width:9px;height:9px;border-radius:50%;
+    background:var(--phosphor);
+    box-shadow:0 0 12px var(--phosphor);
+    animation:blink 2.4s steps(1) infinite;
+  }
+  @keyframes blink{0%,70%{opacity:1}71%,100%{opacity:.25}}
+  h1.title{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:clamp(2.4rem,7vw,4.6rem);
+    line-height:1.04;
+    letter-spacing:-.02em;
+    margin-bottom:1.4rem;
+  }
+  h1.title .range{
+    font-family:var(--mono);
+    font-weight:500;
+    color:var(--ink-faint);
+    display:block;
+    font-size:clamp(1.1rem,3vw,1.7rem);
+    letter-spacing:.02em;
+    margin-top:.5rem;
+  }
+  .thesis{
+    font-size:clamp(1.05rem,2.2vw,1.3rem);
+    color:var(--ink-dim);
+    max-width:60ch;
+    margin-bottom:2.4rem;
+  }
+  .thesis b{color:var(--ink);font-weight:600}
+
+  /* the version-history evolution strip */
+  .evolution{
+    font-family:var(--mono);
+    font-size:.82rem;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:linear-gradient(180deg,var(--bg-soft),var(--bg));
+    padding:1.1rem 1.2rem;
+    margin-bottom:2rem;
+    overflow-x:auto;
+  }
+  .evolution .row{display:flex;gap:.7rem;white-space:nowrap;padding:.18rem 0;align-items:baseline}
+  .evolution .v{color:var(--ink-faint);width:5.5rem;flex:none}
+  .evolution .arrow{color:var(--phosphor)}
+  .evolution .desc{color:var(--ink-dim)}
+  .evolution .desc b{color:var(--ink);font-weight:500}
+
+  .legend{
+    display:flex;flex-wrap:wrap;gap:1.2rem 1.8rem;
+    font-family:var(--mono);font-size:.8rem;color:var(--ink-dim);
+    padding-top:.4rem;
+  }
+  .legend span{display:inline-flex;align-items:center;gap:.5rem}
+  .dot{width:10px;height:10px;border-radius:50%;flex:none}
+  .dot.t{background:var(--phosphor)}
+  .dot.w{background:var(--amber)}
+
+  /* ---------- ERA SECTIONS ---------- */
+  .era{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:clamp(2.5rem,6vw,4.5rem) clamp(1.2rem,5vw,3rem);
+    border-top:1px solid var(--line);
+    position:relative;
+  }
+  .era-head{margin-bottom:2.5rem}
+  .era-index{
+    font-family:var(--mono);
+    font-size:.8rem;
+    letter-spacing:.16em;
+    color:var(--accent);
+    text-transform:uppercase;
+    margin-bottom:.7rem;
+  }
+  .era-head h2{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:clamp(1.6rem,4vw,2.5rem);
+    letter-spacing:-.01em;
+    line-height:1.15;
+    margin-bottom:1rem;
+  }
+  .era-head h2 .yrs{color:var(--accent)}
+  .era-back{
+    color:var(--ink-dim);
+    max-width:68ch;
+    font-size:1.02rem;
+  }
+
+  /* timeline spine + entries */
+  .spine{position:relative;padding-left:clamp(1.6rem,4vw,2.6rem)}
+  .spine::before{
+    content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;
+    background:linear-gradient(180deg,var(--accent),transparent);
+    opacity:.5;
+  }
+  .entry{position:relative;padding:0 0 2rem;}
+  .entry::before{
+    content:"";position:absolute;left:calc(-1*clamp(1.6rem,4vw,2.6rem) + 1px);top:.55rem;
+    width:14px;height:14px;border-radius:50%;
+    background:var(--bg);
+    border:2px solid var(--accent);
+    box-shadow:0 0 0 4px var(--bg);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .entry:hover::before{transform:scale(1.25);box-shadow:0 0 14px var(--accent),0 0 0 4px var(--bg)}
+  .entry .year{
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:1.05rem;
+    color:var(--accent);
+    margin-bottom:.35rem;
+  }
+  .entry .ev{
+    font-size:1.02rem;
+    color:var(--ink);
+    margin-bottom:.6rem;
+    max-width:72ch;
+  }
+  .entry .meta{
+    display:flex;flex-wrap:wrap;gap:.7rem 1rem;
+    font-family:var(--mono);font-size:.78rem;line-height:1.5;
+  }
+  .entry .kw,.entry .world{
+    display:inline-flex;gap:.5rem;align-items:flex-start;
+    padding:.35rem .65rem;border-radius:7px;
+    max-width:100%;
+  }
+  .entry .kw{background:rgba(94,242,160,.07);border:1px solid rgba(94,242,160,.18)}
+  .entry .kw .tag{color:var(--phosphor);flex:none}
+  .entry .kw .val{color:var(--ink-dim);white-space:normal}
+  .entry .world{background:rgba(242,179,94,.06);border:1px solid rgba(242,179,94,.16)}
+  .entry .world .tag{color:var(--amber);flex:none}
+  .entry .world .val{color:var(--ink-dim);white-space:normal}
+
+  /* takeaway block */
+  .takeaway{
+    margin-top:.5rem;
+    border-left:3px solid var(--accent);
+    background:var(--panel);
+    border-radius:0 10px 10px 0;
+    padding:1.3rem 1.5rem;
+  }
+  .takeaway h3{
+    font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:.9rem;
+    font-weight:700;
+  }
+  .takeaway ul{list-style:none;display:grid;gap:.85rem}
+  .takeaway li{position:relative;padding-left:1.3rem;color:var(--ink-dim);font-size:.97rem}
+  .takeaway li::before{content:"›";position:absolute;left:0;color:var(--accent);font-weight:700}
+  .takeaway li b{color:var(--ink);font-weight:600}
+
+  /* ---------- SUMMARY TABLE ---------- */
+  .summary{
+    max-width:var(--maxw);margin:0 auto;
+    padding:clamp(2.5rem,6vw,4.5rem) clamp(1.2rem,5vw,3rem) clamp(4rem,8vw,6rem);
+    border-top:1px solid var(--line);
+  }
+  .summary h2{
+    font-family:var(--display);font-weight:600;
+    font-size:clamp(1.5rem,4vw,2.2rem);margin-bottom:.5rem;letter-spacing:-.01em;
+  }
+  .summary .sub{color:var(--ink-dim);margin-bottom:2rem;max-width:60ch}
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+  table{border-collapse:collapse;width:100%;min-width:560px;font-size:.92rem}
+  th,td{text-align:left;padding:1rem 1.1rem;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{
+    font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-faint);background:var(--bg-soft);
+  }
+  tbody tr:last-child td{border-bottom:none}
+  td .per{font-family:var(--mono);color:var(--phosphor);font-weight:500;white-space:nowrap}
+  td.tech{font-family:var(--mono);font-size:.82rem;color:var(--ink-dim)}
+  .law{
+    margin-top:2rem;padding:1.4rem 1.6rem;border-radius:12px;
+    background:linear-gradient(135deg,rgba(94,242,160,.08),rgba(227,104,216,.06));
+    border:1px solid var(--line);
+    font-size:1.02rem;color:var(--ink-dim);
+  }
+  .law b{color:var(--ink);font-weight:600}
+
+  footer{
+    max-width:var(--maxw);margin:0 auto;
+    padding:2rem clamp(1.2rem,5vw,3rem) 4rem;
+    border-top:1px solid var(--line);
+    font-family:var(--mono);font-size:.78rem;color:var(--ink-faint);
+    display:flex;flex-wrap:wrap;gap:.6rem 1.5rem;justify-content:space-between;
+  }
+
+  @media (max-width:640px){
+    .entry .meta{flex-direction:column}
+    .legend{gap:.8rem 1.4rem}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">commit log &middot; artificial intelligence</div>
+  <h1 class="title">AIの研究・挑戦の歴史
+    <span class="range">1990 → 2026 / プログラマー視点の通史</span>
+  </h1>
+  <p class="thesis">
+    36年を一文で言えば、<b>人間がルールを書く時代</b>から、<b>データから関数を学習させる時代</b>、
+    <b>巨大な汎用モデルにプロンプトで指示する時代</b>、そして<b>AIに目標を渡して自律的に働かせる時代</b>への移行の歴史です。
+  </p>
+
+  <div class="evolution" aria-label="開発者にとってAIとは何だったか">
+    <div class="row"><span class="v">1990s</span><span class="arrow">→</span><span class="desc">人間がルールを書く → <b>データから関数を学習させる</b></span></div>
+    <div class="row"><span class="v">2000–10s</span><span class="arrow">→</span><span class="desc"><b>データから特徴量を学習させる</b>（representation learning）</span></div>
+    <div class="row"><span class="v">2020–23</span><span class="arrow">→</span><span class="desc"><b>巨大な汎用モデルにプロンプトで指示する</b></span></div>
+    <div class="row"><span class="v">2024–26</span><span class="arrow">→</span><span class="desc"><b>目標を渡して自律的に働かせる</b>（エージェント）</span></div>
+  </div>
+
+  <div class="legend">
+    <span><i class="dot t"></i>AI研究・挑戦のできごと</span>
+    <span><i class="dot w"></i>同時代の社会の主な出来事</span>
+  </div>
+</header>
+
+<!-- ERA 1 -->
+<section class="era" style="--accent:var(--era1)">
+  <div class="era-head">
+    <div class="era-index">第1期 / 01</div>
+    <h2>記号処理から統計的学習へ <span class="yrs">1990 – 2000</span></h2>
+    <p class="era-back">
+      1980年代の「エキスパートシステム」ブームが崩壊し、第二次AIの冬に突入した時期。
+      記号処理（symbolic AI）から、データと統計に基づくアプローチへの地殻変動が起きた。
+      「ルールをハードコードする」発想から「データから関数を学習させる」発想へのパラダイムシフト。
+    </p>
+  </div>
+
+  <div class="spine">
+    <div class="entry">
+      <div class="year">1990</div>
+      <div class="ev">強学習可能性（Boosting）の理論的基礎。「弱い学習器の集合は強い学習器を作れる」ことが証明され、後のAdaBoost・勾配ブースティングの源流に。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">Robert Schapire / Boosting</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">東西ドイツ統一、湾岸危機</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">1990</div>
+      <div class="ev">リカレントニューラルネット（RNN）の基礎研究。系列・時系列を扱う再帰構造が進展。記号処理派と接続主義（コネクショニズム）派の論争が続く。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">Jeffrey Elman / Elman network</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">日本のバブル経済が崩壊開始</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">1991</div>
+      <div class="ev">第二次AIの冬が深刻化。Lispマシン市場が崩壊し、エキスパートシステムの商業的失敗が明確に。資金が引き上げられる。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">AI Winter / expert systems の凋落</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">ソ連崩壊、WWW 一般公開</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">1992</div>
+      <div class="ev">TD-Gammon。バックギャモンをプレイする自己対戦型ニューラルネット。強化学習（TD学習）の実用的成功例として象徴的。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">Gerald Tesauro / 強化学習(TD)</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">バルセロナ五輪、マーストリヒト条約</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">1993</div>
+      <div class="ev">強化学習が学問分野として確立へ。エージェントが報酬で学習する枠組みが整理される。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">Sutton &amp; Barto / agent, reward</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">Mosaic公開、商用ネットの本格化</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">1995</div>
+      <div class="ev">サポートベクターマシン（SVM）発表。カーネル法で非線形分類を可能にし、2000年代前半まで機械学習の主役に。理論的に美しく扱いやすかった。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">Vapnik, Cortes / SVM, カーネルトリック</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">Windows 95、Amazon・eBay 創業</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">1995</div>
+      <div class="ev">ランダムフォレストの源流（Random Decision Forests）。決定木のアンサンブル学習が提案される。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">Tin Kam Ho / 決定木, アンサンブル</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">Java言語 正式リリース</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">1997</div>
+      <div class="ev">Deep Blue が世界チェス王者カスパロフに勝利。AIが人間トップに公式戦で勝った象徴的事件。ただし機械学習ではなく総当たり探索＋評価関数の力業。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">IBM Deep Blue / 探索, ブルートフォース</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">香港返還、京都議定書採択</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">1997</div>
+      <div class="ev">LSTM（長短期記憶）発表。RNNの「勾配消失問題」を解決するゲート機構。後の音声認識・機械翻訳・NLPの基盤に。この10年で最も後世に効いた発明の一つ。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">Hochreiter, Schmidhuber / LSTM, ゲート機構</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">初代プリウス発売、Netflix 創業</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">1998</div>
+      <div class="ev">LeNet-5（CNN）論文発表。畳み込みニューラルネットで手書き数字認識（MNIST）を実用化。郵便番号読み取りなどに応用。2012年AlexNetの直接の祖先。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">LeCun, Bengio / CNN, LeNet, MNIST</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">Google 創業、Windows 98</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">1999</div>
+      <div class="ev">NVIDIA が GPU を発表（GeForce 256）。当時はゲーム用途だったが、後にニューラルネット学習を爆速化し深層学習革命の物理的前提となる。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">NVIDIA / GPU, 並列計算</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">ユーロ導入、Napster、Y2K対応</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2000</div>
+      <div class="ev">確率的グラフィカルモデルの隆盛。ベイジアンネットワーク、隠れマルコフモデル（HMM）が音声認識などで主流化。データ駆動・確率論的アプローチが定着。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">Judea Pearl / HMM, ベイジアンネット</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">ITバブル崩壊、PlayStation 2</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="takeaway">
+    <h3>// programmer's note</h3>
+    <ul>
+      <li><b>パラダイムの転換点。</b> if-then ルールを人間が書き下す記号処理から、損失関数を最小化して重みを最適化する統計的学習へ。「モデルを訓練する」発想がここで主流に。</li>
+      <li><b>当時の主役は SVM。</b> 理論保証があり、カーネルで非線形も扱え、小〜中規模データで安定。ニューラルネットは学習が不安定で重いと冷遇されていた。</li>
+      <li><b>雌伏の10年。</b> LSTM(1997)・CNN/LeNet(1998) はほぼ完成していたのに、データ・GPU・学習テクニックが不足して本領を発揮できなかった。</li>
+      <li><b>Deep Blue の罠。</b> 1997年の勝利は機械学習ではなく探索＋人手調整の評価関数。「賢くなった」のではなく「ハードで殴った」例。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ERA 2 -->
+<section class="era" style="--accent:var(--era2)">
+  <div class="era-head">
+    <div class="era-index">第2期 / 02</div>
+    <h2>ディープラーニング革命 <span class="yrs">2000 – 2020</span></h2>
+    <p class="era-back">
+      出揃ったアルゴリズム（CNN・LSTM）に、ビッグデータ・GPU・学習テクニックという3つの燃料が揃い、ディープラーニングが爆発。
+      「人間が特徴量を設計する」時代から「データから特徴量そのものを学習する（representation learning）」時代へ。
+      後半は「学習済み巨大モデルを使う」時代の幕開け。
+    </p>
+  </div>
+
+  <div class="spine">
+    <div class="entry">
+      <div class="year">2006</div>
+      <div class="ev">ディープラーニング復活の号砲。Deep Belief Networks。層ごとの事前学習（pre-training）で深い多層NNの学習が初めて実用化。「deep learning」という語が広まる。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">Geoffrey Hinton / DBN, 層ごと事前学習</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">Twitter 開始、Amazon AWS 開始</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2009</div>
+      <div class="ev">ImageNet 公開。1400万枚規模のラベル付き画像DB。「アルゴリズムよりデータ」を象徴する基盤に。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">Fei-Fei Li / ImageNet, 大規模データセット</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">世界金融危機、Bitcoin 誕生</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2010</div>
+      <div class="ev">ReLU 活性化関数が普及。max(0, x) という単純さで学習を約6倍高速化し、勾配を深い層まで流せるように。Kaggle 開始。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">Nair &amp; Hinton / ReLU, Kaggle</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">iPad 発売、欧州債務危機</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2011</div>
+      <div class="ev">IBM Watson が Jeopardy! でクイズ王に勝利。自然言語処理＋情報検索＋機械学習の統合システム。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">IBM Watson / NLP, 質問応答</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">東日本大震災、アラブの春</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2012</div>
+      <div class="ev">AlexNet が ImageNet コンペで圧勝。ディープCNN＋GPU＋大規模データが従来手法を蹴散らす。深層学習革命の起点。同年 Google Brain が「猫」を教師なしで認識。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">Krizhevsky, Sutskever, Hinton / AlexNet, ILSVRC</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">ロンドン五輪、Facebook 上場</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2013</div>
+      <div class="ev">word2vec。単語を意味ベクトルに変換し「king − man + woman ≒ queen」が成立。NLPの土台に。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">Tomas Mikolov / word2vec, embedding</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">スノーデン事件（NSA監視暴露）</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2014</div>
+      <div class="ev">GAN（敵対的生成ネットワーク）。生成器と識別器を競わせて本物そっくりのデータを生成。生成AIの源流。同年 VGGNet、DeepFace、seq2seq・Attention も進展。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">Ian Goodfellow / GAN, Attention機構</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">クリミア併合、エボラ流行</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2015</div>
+      <div class="ev">ResNet（残差ネットワーク）。スキップ接続で152層という超深層を学習可能にし、画像認識で人間の精度（誤差5.1%）を超える（3.57%）。同年 OpenAI 設立、TensorFlow 公開。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">Kaiming He / ResNet, スキップ接続</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">パリ協定、ギリシャ財政危機</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2016</div>
+      <div class="ev">AlphaGo が囲碁トップ棋士 李世乭に勝利。「あと10年は無理」と言われた囲碁を、深層強化学習＋モンテカルロ木探索で攻略。同年 WaveNet（音声合成）。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">DeepMind, Hassabis / AlphaGo, 深層強化学習</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">Brexit国民投票、ポケモンGO</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2017</div>
+      <div class="ev">Transformer 論文「Attention Is All You Need」。RNNを捨てて Attention だけで系列処理。並列化しやすく、現在のLLM（GPT・BERT）すべての基盤に。この20年で最重要の発明。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">Vaswani 他 / Transformer, Self-Attention</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">仮想通貨バブル、#MeToo運動</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2018</div>
+      <div class="ev">BERT と GPT-1 登場。「巨大テキストで事前学習 → 個別タスクに微調整（fine-tuning）」という転移学習のパラダイムが確立。同年 AlphaFold 1。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">Google(BERT), OpenAI(GPT) / 転移学習</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">米中貿易摩擦、GDPR施行</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2019</div>
+      <div class="ev">GPT-2。「危険すぎる」と段階的公開され話題に。大規模言語モデルのスケール則が見え始める。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">OpenAI / GPT-2, スケーリング</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">香港デモ、新型コロナ確認（年末）</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2020</div>
+      <div class="ev">GPT-3 発表（1750億パラメータ）。few-shot 学習で「プロンプトを書くだけ」で多様なタスクをこなし汎用性を実証。同年 AlphaFold 2 がタンパク質立体構造予測の50年来の難問をほぼ解決。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">OpenAI(GPT-3), DeepMind(AlphaFold2) / LLM</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">COVID-19 パンデミック</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="takeaway">
+    <h3>// programmer's note</h3>
+    <ul>
+      <li><b>2012年が分水嶺。</b> AlexNet以前は特徴量を手書きするのが当たり前。以降は「データを流してネットワークに特徴を見つけさせる」が標準に（Software 2.0）。</li>
+      <li><b>3つの燃料が揃った。</b> アルゴリズム（90年代に完成）・データ（ImageNet 2009）・計算資源（GPU）が2012年前後で初めて揃った。発明が10年待って花開いた。</li>
+      <li><b>Transformer 一強へ。</b> 画像はCNN・系列はRNN/LSTMという棲み分けが「とりあえずTransformer」に収束。スケーリング則が発見され巨大化競争が始まる。</li>
+      <li><b>「作る」から「使う」へ。</b> GPT-3以降、AIは「自分で訓練するもの」から「APIを叩いてプロンプトで指示するもの」になった。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ERA 3 -->
+<section class="era" style="--accent:var(--era3)">
+  <div class="era-head">
+    <div class="era-index">第3期 / 03</div>
+    <h2>生成AI・対話AI・推論・エージェント <span class="yrs">2020 – 2026</span></h2>
+    <p class="era-back">
+      研究室の成果が一気に世間一般のツールへ転化。「モデルを訓練する」から「巨大な汎用モデルにプロンプトで指示する」へ、
+      さらに「AIに目標を渡してツールを使わせ自律的に作業させる（エージェント）」へと抽象度が一段ずつ上昇。
+      生成AI → 対話AI → 推論モデル → エージェント、という4段階の変化。
+    </p>
+  </div>
+
+  <div class="spine">
+    <div class="entry">
+      <div class="year">2020</div>
+      <div class="ev">GPT-3（1750億パラメータ）でfew-shot学習を実証。同年 AlphaFold 2 がタンパク質立体構造予測の難問をほぼ解決。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">OpenAI(GPT-3), DeepMind / LLM, プロンプト</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">COVID-19、リモートワーク普及</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2021</div>
+      <div class="ev">テキスト→画像生成の幕開け。CLIP（画像と言語を結びつける）とDALL·Eが登場。GitHub Copilot プレビュー公開で「AIがコードを書く」が現実に。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">OpenAI / CLIP, DALL·E, GitHub Copilot</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">東京五輪（無観客）、半導体不足</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2022</div>
+      <div class="ev">拡散モデルで画像生成が爆発（Stable Diffusion／Midjourney）。そして11月30日 ChatGPT 公開。2か月で1億ユーザーに達し史上最速の普及。AIが一般人の日常ツールになった転換点。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">OpenAI(ChatGPT/GPT-3.5) / 拡散モデル, RLHF</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">ロシアのウクライナ侵攻、世界的インフレ</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2023</div>
+      <div class="ev">GPT-4（マルチモーダル＝画像も入力可）。Meta が LLaMA をオープンソース公開し誰でも動かせるLLMが普及。Anthropic の Claude、Google の Gemini が対抗。AI開発の一時停止を求める公開書簡も。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">GPT-4, LLaMA, Claude, Gemini / RAG, OSS LLM</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">生成AI著作権訴訟が多発</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2024</div>
+      <div class="ev">GPT-4o（オムニ）で音声・画像・テキストをリアルタイム統合。そして9月 o1：推論モデル登場。答えを即出さず「思考の連鎖（chain-of-thought）」で順を追って考え自己修正する新クラス。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">OpenAI(GPT-4o, o1) / 推論モデル, CoT</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">NVIDIA時価総額が世界最高水準、EU AI Act</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2025</div>
+      <div class="ev">推論モデルとエージェントの年。o3 が ARC-AGI で高スコア。中国勢の躍進（DeepSeek-R1 が低コストで推論性能、Qwen・Kimi・GLM 等）。実験的AIが数学オリンピックで金メダル級を達成。Webブラウズ・コード実行・ツール使用を自律的に行うエージェントが主流化。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">o3, ChatGPT Agent, DeepSeek-R1 / エージェント</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">米中AI覇権競争、企業のAI導入が約8割</span></span>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="year">2026</div>
+      <div class="ev">（現在）エージェント基盤の本格的な企業導入フェーズ。コーディング・エンジニアリングを自律実行するエージェント（Codex系、Claude Code など）が実務に組み込まれる。推論とツール使用の統合がさらに進む。実験的な高性能モデルは安全上の懸念から限定提供の段階に。</div>
+      <div class="meta">
+        <span class="kw"><span class="tag">key</span><span class="val">エージェント基盤 / 自律コーディング, AIガバナンス</span></span>
+        <span class="world"><span class="tag">world</span><span class="val">企業ワークフローの再設計、AI規制と運用統制</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="takeaway">
+    <h3>// programmer's note</h3>
+    <ul>
+      <li><b>抽象度が4段階上がった。</b> ①生成AI（生成できる）→ ②対話AI（会話で指示できる）→ ③推論モデル（考えてから答える）→ ④エージェント（目標を渡すと完遂する）。</li>
+      <li><b>「推論モデル」が最大の構造変化。</b> 内部で長い思考過程を展開し、計算リソースを推論時（test-time）に多く使う。学習を大きくするだけでなく「考える時間を増やす」第二の軸が見つかった。</li>
+      <li><b>コーディングが主戦場に。</b> Copilot（補完, 2021）→ チャットでコード生成（2023）→ 自律コーディングエージェント（2025〜26）。ファイルを読み、テストを書き、実行し、修正までする。</li>
+      <li><b>オープンモデルと中国勢の台頭。</b> LLaMA公開以降クローズドAPI一強の構図が崩れ、ローカルで動く高性能モデルが選択肢に。DeepSeek-R1 が低コスト推論を実証。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SUMMARY -->
+<section class="summary">
+  <h2>全体総括：36年の一本の流れ</h2>
+  <p class="sub">時代ごとに「開発者にとってAIとは何だったか」と「主要技術」を並べると、抽象度が一段ずつ上がっていく。</p>
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th>時期</th><th>開発者にとってのAIとは</th><th>主要技術</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="per">1990年代</span></td>
+          <td>人間がルールを書くもの → データから関数を学習させるもの</td>
+          <td class="tech">SVM / 決定木 / （冷遇された）NN</td>
+        </tr>
+        <tr>
+          <td><span class="per">2000–10年代</span></td>
+          <td>データから特徴量を学習させるもの</td>
+          <td class="tech">CNN / RNN・LSTM / Transformer</td>
+        </tr>
+        <tr>
+          <td><span class="per">2020–2023</span></td>
+          <td>巨大な汎用モデルにプロンプトで指示するもの</td>
+          <td class="tech">LLM / 拡散モデル / RLHF</td>
+        </tr>
+        <tr>
+          <td><span class="per">2024–2026</span></td>
+          <td>目標を渡して自律的に働かせるもの</td>
+          <td class="tech">推論モデル / エージェント</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="law">
+    一貫して効いている法則：<b>良いアルゴリズムは、データと計算資源が追いつくまで「待つ」</b>。
+    LSTM・CNN が10年待って花開いたように、Transformer も「スケールさせる環境」が整って初めて真価を発揮した。
+  </div>
+</section>
+
+<footer>
+  <span>AI History Timeline · 1990–2026</span>
+  <span>built for GitHub Pages</span>
+</footer>
+
+</body>
+</html>
